@@ -46,8 +46,14 @@ for (const vp of VIEWPORTS) {
     const offenders = [];
     for (const el of document.querySelectorAll('body *')) {
       const r = el.getBoundingClientRect();
-      if (r.width && (r.right > docW + 1 || r.left < -1) && !el.closest('.record__scroll, .visually-hidden, .skip-link')) {
-        offenders.push(`${el.tagName.toLowerCase()}.${[...el.classList].join('.')} (${Math.round(r.left)}–${Math.round(r.right)})`);
+      if (
+        r.width &&
+        (r.right > docW + 1 || r.left < -1) &&
+        !el.closest('.record__scroll, .visually-hidden, .skip-link')
+      ) {
+        offenders.push(
+          `${el.tagName.toLowerCase()}.${[...el.classList].join('.')} (${Math.round(r.left)}–${Math.round(r.right)})`,
+        );
       }
     }
     return { scrollW: document.documentElement.scrollWidth, docW, offenders: offenders.slice(0, 5) };
@@ -57,7 +63,9 @@ for (const vp of VIEWPORTS) {
   }
 
   // Calculator defaults
-  const values = await page.$$eval('[data-out]', (els) => Object.fromEntries(els.map((e) => [e.dataset.out, e.textContent])));
+  const values = await page.$$eval('[data-out]', (els) =>
+    Object.fromEntries(els.map((e) => [e.dataset.out, e.textContent])),
+  );
   if (values.pas !== '$25.00' || values.fee !== '$6.25' || values.remaining !== '$18.75') {
     issues.push(`calculator defaults wrong: ${JSON.stringify(values)}`);
   }
@@ -118,10 +126,14 @@ for (const vp of VIEWPORTS) {
   const order = [];
   for (let i = 0; i < 60; i++) {
     await page.keyboard.press('Tab');
-    order.push(await page.evaluate(() => document.activeElement?.id || document.activeElement?.textContent?.trim().slice(0, 24)));
+    order.push(
+      await page.evaluate(() => document.activeElement?.id || document.activeElement?.textContent?.trim().slice(0, 24)),
+    );
   }
   const reached = ['calc-budget', 'calc-hours-range', 'calc-hours', 'faq-1-btn'].filter((id) => order.includes(id));
-  console.log(`Keyboard: reached ${reached.join(', ')} in first 60 tabs; first stops: ${order.slice(0, 8).join(' | ')}`);
+  console.log(
+    `Keyboard: reached ${reached.join(', ')} in first 60 tabs; first stops: ${order.slice(0, 8).join(' | ')}`,
+  );
   if (!order.includes('calc-budget') || !order.includes('calc-hours')) failures.push('keyboard');
   await page.close();
 }

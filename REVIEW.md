@@ -42,7 +42,7 @@ confirm that both portal pages load.
 - [x] The calculator is labelled "Illustrative calculator — not an invoice". The required disclosure sits directly below it.
 - [x] Protected Ad Spend is never presented as guaranteed savings. The hero qualifier, pricing note, FAQ, and footer all say so.
 - [x] No testimonials, statistics, customer logos, integrations, certifications, or SLAs.
-- [x] No duplicate Terms of Service or Privacy Policy pages. No legal URLs were invented. Legal references point to the onboarding portal.
+- [x] No duplicate Terms of Service or Privacy Policy pages. No legal URLs were invented. The footer and FAQ link to the owner-supplied https://portal.orvionixos.xyz/terms and https://portal.orvionixos.xyz/privacy.
 - [x] The design is restrained and premium, with no space themes. Imagery is typographic and illustrative only.
 - [x] All navigation, the calculator, the accordion, and links work (automated and browser checks).
 - [x] Tested at mobile, tablet (including iPad sizes), and desktop widths.
@@ -85,8 +85,7 @@ check that the site's copy matches the legal documents on:
   It neither claims nor implies that Orvionix OS built the underlying technology. The legal disclosures in the
   portal are unchanged.
 
-**Direct legal URLs:** if the portal has stable URLs for the Terms and the Privacy Policy, send them to me. I will
-replace the "available through the onboarding portal" references in the footer and FAQ with direct links.
+**Direct legal URLs:** supplied by the owner (https://portal.orvionixos.xyz/terms and https://portal.orvionixos.xyz/privacy) and linked from the footer and FAQ. Like the other portal links, they could not be loaded from the build environment. **Owner action:** confirm that both pages open.
 
 ## 6. Owner review checklist
 

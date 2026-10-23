@@ -4,7 +4,7 @@ import { beforeEach, describe, expect, it } from 'vitest';
 import { initAccordion } from '../src/ui/accordion';
 import { initCalculator } from '../src/ui/calculator';
 import { initNav } from '../src/ui/nav';
-import { PORTAL_LOGIN_URL, PORTAL_SIGNUP_URL } from '../src/config';
+import { PORTAL_LOGIN_URL, PORTAL_SIGNUP_URL, PRIVACY_URL, TERMS_URL } from '../src/config';
 
 const html = readFileSync(resolve(import.meta.dirname, '../index.html'), 'utf8');
 
@@ -41,7 +41,13 @@ describe('page content and links', () => {
   });
 
   it('only links to approved destinations or existing in-page anchors', () => {
-    const allowed = new Set([PORTAL_SIGNUP_URL, PORTAL_LOGIN_URL, 'mailto:support@orvionixos.com']);
+    const allowed = new Set([
+      PORTAL_SIGNUP_URL,
+      PORTAL_LOGIN_URL,
+      TERMS_URL,
+      PRIVACY_URL,
+      'mailto:support@orvionixos.com',
+    ]);
     document.querySelectorAll<HTMLAnchorElement>('a[href]').forEach((a) => {
       const href = a.getAttribute('href')!;
       expect(href, a.outerHTML).not.toBe('');
@@ -63,6 +69,16 @@ describe('page content and links', () => {
       ['Log In', PORTAL_LOGIN_URL],
       ['Get Started', PORTAL_SIGNUP_URL],
     ]);
+  });
+
+  it('links Terms of Service and Privacy Policy to the owner-supplied URLs', () => {
+    const links = Array.from(document.querySelectorAll<HTMLAnchorElement>('a'));
+    const terms = links.filter((a) => a.textContent!.trim() === 'Terms of Service');
+    const privacy = links.filter((a) => a.textContent!.trim() === 'Privacy Policy');
+    expect(terms).toHaveLength(2);
+    expect(privacy).toHaveLength(2);
+    terms.forEach((a) => expect(a.getAttribute('href')).toBe(TERMS_URL));
+    privacy.forEach((a) => expect(a.getAttribute('href')).toBe(PRIVACY_URL));
   });
 
   it('shows the exact business contact details', () => {
