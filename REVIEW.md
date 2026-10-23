@@ -23,10 +23,16 @@ the owner explicitly approves.
 | Browser QA (Chromium) at 320 / 375 / 768 / 820 / 1024 / 1366 / 1440 px + 640 px (200% zoom) | Pass. No horizontal overflow, console errors, or failed requests. Calculator, menu, anchors, and accordion work. Touch targets ≥ 44 px |
 | Keyboard-only pass                                                                          | Skip link, then nav, then CTAs, then calculator inputs and slider, then FAQ triggers, in visual order                                  |
 
-**Not verified (network restriction):** this build environment could not reach `portal.orvionixos.xyz` (the
-proxy blocked it). The portal URLs come exactly from the brief and are covered by tests, but no one has opened
-them in a browser from this environment. **Owner action:** click Get Started and Log In on the preview and
-confirm that both portal pages load.
+**Live link check (October 23, 2026, run from GitHub Actions; `.github/workflows/live-links.yml`):**
+
+| Destination                            | Result                                                                                     |
+| -------------------------------------- | ------------------------------------------------------------------------------------------ |
+| https://portal.orvionixos.xyz/signup   | HTTP 200 (portal title "OrvionixOS — Autonomous Spend Intelligence")                       |
+| https://portal.orvionixos.xyz/login    | HTTP 200                                                                                   |
+| https://portal.orvionixos.xyz/terms    | HTTP 200. Contains "October 22, 2026", "25%", "seven (7) calendar days", and "1645 Sunset" |
+| https://portal.orvionixos.xyz/privacy  | HTTP 200. Contains "October 22, 2026" and "1645 Sunset"                                    |
+| support@orvionixos.com                 | Domain has MX records (IONOS). The mailbox itself was not tested: no email was sent        |
+| https://orvionixos.github.io/Website-/ | HTTP 404 until GitHub Pages is enabled for the `gh-pages` branch                           |
 
 ## 3. Master-prompt QA checklist
 
