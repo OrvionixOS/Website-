@@ -35,18 +35,22 @@ jobs:
               out=$(curl -sS -L --max-time 30 -o page.html -w '%{http_code} %{url_effective}' "${{ matrix.target }}") || { echo "::error::request failed: $out"; exit 1; }
               code=${out%% *}
               title=$(grep -o '<title>[^<]*' page.html | head -1 | sed 's/<title>//')
-              echo "HTTP $code -> ${out#* } | title: $title"
+              facts=""
+              for k in "Protected Ad Spend" "25%" "seven (7) calendar days" "1645 Sunset" "6450 W Sunset" "October 22, 2026"; do
+                grep -qF "$k" page.html && facts="$facts [has: $k]"
+              done
+              echo "::notice title=${{ matrix.name }}::HTTP $code, final ${out#* }, title '$title', $(wc -c < page.html) bytes$facts"
               echo "### ${{ matrix.name }}: HTTP $code, final URL ${out#* }, title: $title" >> "$GITHUB_STEP_SUMMARY"
               [ "$code" -ge 200 ] && [ "$code" -lt 400 ] || { echo "::error::HTTP $code"; exit 1; }
               ;;
             mx)
               mx=$(dig +short MX "${{ matrix.target }}")
-              echo "MX: ${mx:-none}"; echo "### MX ${{ matrix.target }}: ${mx:-none}" >> "$GITHUB_STEP_SUMMARY"
+              echo "::notice title=${{ matrix.name }}::MX ${mx:-none}" | tr '\n' ' '; echo; echo "### MX ${{ matrix.target }}: ${mx:-none}" >> "$GITHUB_STEP_SUMMARY"
               [ -n "$mx" ] || { echo "::error::no MX record, mail to support@ will bounce"; exit 1; }
               ;;
             dns)
               a=$(dig +short "${{ matrix.target }}")
-              echo "Records: ${a:-none}"; echo "### DNS ${{ matrix.target }}: ${a:-none}" >> "$GITHUB_STEP_SUMMARY"
+              echo "::notice title=${{ matrix.name }}::records $(echo ${a:-none} | tr '\n' ' ')"; echo "### DNS ${{ matrix.target }}: ${a:-none}" >> "$GITHUB_STEP_SUMMARY"
               [ -n "$a" ] || { echo "::error::hostname does not resolve"; exit 1; }
               ;;
           esac
