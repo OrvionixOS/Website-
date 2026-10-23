@@ -1,0 +1,52 @@
+name: Live link check
+
+# Tests every external destination the site links to against the live services.
+on:
+  workflow_dispatch:
+  schedule:
+    - cron: '17 14 * * *'
+  push:
+    branches: [main, live-link-check]
+
+permissions:
+  contents: read
+
+jobs:
+  check:
+    name: ${{ matrix.name }}
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - { name: 'Get Started (portal signup)', kind: http, target: 'https://portal.orvionixos.xyz/signup' }
+          - { name: 'Log In (portal login)', kind: http, target: 'https://portal.orvionixos.xyz/login' }
+          - { name: 'Terms of Service', kind: http, target: 'https://portal.orvionixos.xyz/terms' }
+          - { name: 'Privacy Policy', kind: http, target: 'https://portal.orvionixos.xyz/privacy' }
+          - { name: 'Marketing site (GitHub Pages)', kind: http, target: 'https://orvionixos.github.io/Website-/' }
+          - { name: 'Support email (MX for orvionixos.com)', kind: mx, target: 'orvionixos.com' }
+          - { name: 'Portal DNS (portal.orvionixos.xyz)', kind: dns, target: 'portal.orvionixos.xyz' }
+    steps:
+      - name: Check ${{ matrix.target }}
+        run: |
+          set -u
+          case "${{ matrix.kind }}" in
+            http)
+              out=$(curl -sS -L --max-time 30 -o page.html -w '%{http_code} %{url_effective}' "${{ matrix.target }}") || { echo "::error::request failed: $out"; exit 1; }
+              code=${out%% *}
+              title=$(grep -o '<title>[^<]*' page.html | head -1 | sed 's/<title>//')
+              echo "HTTP $code -> ${out#* } | title: $title"
+              echo "### ${{ matrix.name }}: HTTP $code, final URL ${out#* }, title: $title" >> "$GITHUB_STEP_SUMMARY"
+              [ "$code" -ge 200 ] && [ "$code" -lt 400 ] || { echo "::error::HTTP $code"; exit 1; }
+              ;;
+            mx)
+              mx=$(dig +short MX "${{ matrix.target }}")
+              echo "MX: ${mx:-none}"; echo "### MX ${{ matrix.target }}: ${mx:-none}" >> "$GITHUB_STEP_SUMMARY"
+              [ -n "$mx" ] || { echo "::error::no MX record, mail to support@ will bounce"; exit 1; }
+              ;;
+            dns)
+              a=$(dig +short "${{ matrix.target }}")
+              echo "Records: ${a:-none}"; echo "### DNS ${{ matrix.target }}: ${a:-none}" >> "$GITHUB_STEP_SUMMARY"
+              [ -n "$a" ] || { echo "::error::hostname does not resolve"; exit 1; }
+              ;;
+          esac
