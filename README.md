@@ -102,6 +102,14 @@ The output is a static `dist/` folder. Any static host works: Netlify, Vercel, C
 Deploy it as its **own** project or site. Do not deploy it into the portal's hosting project and do not change
 its settings. For rollback, use the host's "redeploy previous deployment" feature, or rebuild a previous git tag.
 
+### Current deployment: GitHub Pages
+
+`.github/workflows/site.yml` runs `format:check` and `verify` on every pull request and every push to `main`. On
+`main` it builds with `BASE_PATH=./` and `SITE_URL=https://orvionixos.github.io/Website-`, then publishes `dist/`
+to the `gh-pages` branch. GitHub Pages serves that branch at https://orvionixos.github.io/Website-/. This is
+independent of the portal: it uses no DNS records and does not touch the portal's hosting. To roll back, revert the
+commit on `main`, or re-run the workflow for an earlier commit.
+
 ### Custom domain
 
 1. Choose the marketing hostname, for example the root `orvionixos.xyz` or `www.orvionixos.xyz`. It must

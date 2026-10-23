@@ -14,7 +14,7 @@ function siteUrlMeta(siteUrl: string): Plugin {
     transformIndexHtml(html) {
       if (!base) return html;
       return html
-        .replace(/content="\/og-image\.png"/g, `content="${base}/og-image.png"`)
+        .replace(/content="\.?\/og-image\.png"/g, `content="${base}/og-image.png"`)
         .replace(
           '</head>',
           `  <link rel="canonical" href="${base}/" />\n    <meta property="og:url" content="${base}/" />\n  </head>`,
@@ -26,6 +26,8 @@ function siteUrlMeta(siteUrl: string): Plugin {
 export default defineConfig(({ mode }) => {
   const env = loadEnv(mode, process.cwd(), '');
   return {
+    // BASE_PATH='./' lets the build run from a sub-path such as a GitHub Pages project site.
+    base: env.BASE_PATH || '/',
     plugins: [siteUrlMeta(env.SITE_URL ?? '')],
     build: {
       target: 'es2020',

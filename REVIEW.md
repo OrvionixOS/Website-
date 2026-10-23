@@ -66,26 +66,43 @@ confirm that both portal pages load.
 4. **Link behaviour:** portal links open in the same tab, which is the usual pattern for conversion. Tell me if
    you want them to open in a new tab.
 
-## 5. Items flagged for legal review (not changed)
+## 5. Check against the Terms of Service and Privacy Policy (both effective October 22, 2026)
 
-I could not read the Terms of Service and Privacy Policy from this environment. Before launch, someone should
-check that the site's copy matches the legal documents on:
+I compared every fee, billing, and risk claim on the site with the full text of both documents.
 
-- The 25% rate and the definition of "eligible Protected Ad Spend".
-- Whether the public formula, (Daily Budget ÷ 24) × Hours Remaining, matches the Terms' calculation method. The
-  page calls it simplified, but it should not contradict the Terms.
-- "Billed monthly in arrears" and "due within seven calendar days".
-- "No performance fee when no eligible Protected Ad Spend is recorded".
-- "No upfront service fee" and "no recurring monthly subscription fee". Confirm there are no setup fees, minimums,
-  or pass-through costs in the Terms.
-- Descriptions of automated actions (pausing ads, reducing budgets "where enabled").
-- **Cancellation:** the brief lists it as a consistency area but provides no copy, so the site says nothing about
-  cancellation.
-- **Third-party technology providers:** the marketing copy does not name the underlying provider, as instructed.
-  It neither claims nor implies that Orvionix OS built the underlying technology. The legal disclosures in the
-  portal are unchanged.
+| Site claim                                                                                 | Terms section             | Result                                                                                                                   |
+| ------------------------------------------------------------------------------------------ | ------------------------- | ------------------------------------------------------------------------------------------------------------------------ |
+| Fee is 25% of Protected Ad Spend; you retain 75%                                           | §9.1                      | Matches                                                                                                                  |
+| Protected Ad Spend = (Daily Budget ÷ 24) × Hours Remaining; Fee = 25% × Protected Ad Spend | §9.2                      | Matches. The §9.2 worked example ($240, 10 h → $100 / $25 / $75) is now a unit test                                      |
+| No upfront fee, no monthly subscription                                                    | §9.1                      | Matches                                                                                                                  |
+| No fee when no Protected Ad Spend is recorded, "subject to the Terms"                      | §9.1, §10.1               | Matches (the Terms add "unless an Order Form expressly states otherwise")                                                |
+| Billed monthly in arrears; due within 7 calendar days                                      | §10.1, §10.2              | Matches                                                                                                                  |
+| Protected Ad Spend is a calculation, not a guarantee of savings                            | §9.7, §4.5, §17           | Matches                                                                                                                  |
+| Automated actions can reduce delivery, conversions, and sales                              | §5.3, §18.1               | Matches                                                                                                                  |
+| One event never exceeds one day's budget (calculator caps hours at 24)                     | §9.5                      | Matches                                                                                                                  |
+| Calculator disclosure: eligibility rules, exclusions, budget changes, duplicate events     | §9.4–§9.6                 | Consistent: the calculator is a labelled simplification of these rules                                                   |
+| Illustrative record fields                                                                 | §10.1 itemized invoice    | Consistent; the copy now describes the invoice accurately                                                                |
+| Marketing site sets no cookies and loads no third-party scripts                            | Privacy §9                | Consistent                                                                                                               |
+| Underlying technology provider not named                                                   | Terms §13, Privacy §6, §8 | Not contradicted. The site neither names nor denies the providers, and makes no claim that Orvionix built the technology |
 
-**Direct legal URLs:** supplied by the owner (https://portal.orvionixos.xyz/terms and https://portal.orvionixos.xyz/privacy) and linked from the footer and FAQ. Like the other portal links, they could not be loaded from the build environment. **Owner action:** confirm that both pages open.
+### Copy added to match disclosures in the Terms
+
+- FAQ "Can automated optimization affect my campaigns?": actions can happen automatically, without advance notice, unless an approval mode is enabled (§5.2).
+- FAQ "Is there an upfront fee?": also no setup fee or cancellation fee unless an Order Form says otherwise (§9.1).
+- FAQ "When do I pay?": billing disputes must be raised in writing within 10 calendar days (§10.4).
+- New FAQ "Can I cancel?": cancel any time by written notice to support. Earned fees remain due, and past changes are not automatically reversed (§22.2, §11, §5.4).
+- Calculator hint: hours run to the end of the day in the ad account's time zone (§9.5(a)).
+- Transparency section: describes the itemized invoice and supporting records on request (§9.8, §10.1). This replaces the line that said no specific product screen was implied.
+
+### Conflicts to resolve before accepting customers (not changed)
+
+1. **Business address.** The site and the brief say **6450 W Sunset Blvd**, Hollywood, CA 90028. The Terms (§26) and the Privacy Policy (§18) say **1645 Sunset Blvd**, Hollywood, CA 90028. One of them is wrong, and the legal documents must not be edited from this project. Tell me which address is correct.
+2. **Contracting entity.** The Terms name "Orvionix, doing business as ORVIONIX OS" and end "© 2026 Orvionix." The site's footer says "© 2026 Orvionix OS" (as the brief specified) and never names Orvionix. Recommendation: add "Orvionix OS is a trade name of Orvionix." to the footer so customers know who they contract with.
+
+### Lower-priority notes
+
+- The Terms call the triggering action a "Protection Event"; the site says "qualifying event" (as the brief specified). This is not a conflict.
+- The Terms limit the service to business use (§1.3). The site targets businesses but doesn't say so explicitly. Optional: add "For business use only" to the footer.
 
 ## 6. Owner review checklist
 

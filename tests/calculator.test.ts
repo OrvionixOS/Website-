@@ -20,6 +20,13 @@ describe('calculate', () => {
     expect(formatUsd(r.remaining)).toBe('$18.75');
   });
 
+  it('matches the worked example in Terms of Service §9.2 ($240, 10 hours)', () => {
+    const r = calculate(240, 10);
+    expect(r.protectedAdSpend).toBeCloseTo(100, 10);
+    expect(r.fee).toBeCloseTo(25, 10);
+    expect(r.remaining).toBeCloseTo(75, 10);
+  });
+
   it.each([
     // budget, hours, pas, fee, remaining
     [240, 4, '$40.00', '$10.00', '$30.00'],

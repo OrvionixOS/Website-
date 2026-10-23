@@ -194,9 +194,9 @@ describe('accordion', () => {
     expect(panel.hidden).toBe(true);
   });
 
-  it('has nine questions, each wired to a panel', () => {
+  it('has ten questions, each wired to a panel', () => {
     const triggers = document.querySelectorAll('.accordion__trigger');
-    expect(triggers).toHaveLength(9);
+    expect(triggers).toHaveLength(10);
     triggers.forEach((t) => expect(document.getElementById(t.getAttribute('aria-controls')!)).not.toBeNull());
   });
 });
